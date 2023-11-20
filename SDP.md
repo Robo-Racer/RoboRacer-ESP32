@@ -61,11 +61,11 @@
 
 ## Release Cycle
 
-- Automatically deploy changes to the pre-release environment every time there is a merge operation on the master branch.
+- Automatically deploy changes to the prerelease environment every time there is a merge operation on the master branch.
 - Deploy updates to the production environment with each official release.
 - Use semantic versioning MAJOR.minor.patch
 - The minor version number is incremented whenever new features are added to the project (e.g., new training modes or user interface updates).
-- The patch number is increased when bug fixes are made to the project (such as correcting speed accuracy or battery performance issues).
+- The patch number is increased when bugfixes are made to the project (such as correcting speed accuracy or battery performance issues).
 - The major version number is increased if the project has a disruptive API change (e.g., changes to data interaction formats or control protocols).
 
 ## Environments
