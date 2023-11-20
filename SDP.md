@@ -23,17 +23,18 @@
 5. Demo/Review with Project Partner (1/week).
 6. Group meetings on a need-be basis, with constant communication on Discord.
 
-## Rules (Reformatted as Principles)
 
-| Principle | Description |
-|-----------|-------------|
-| Communication | Discord for asynchronous communication, responses within 24 hours |
-| Repository Management | GitHub organization for repositories and projects |
-| Task Management | Kanban board on GitHub for continuous work and task tracking |
-| Issue Tracking | Tasks are turned into GitHub Issues, communication upon task pickup |
-| Development Workflow | Changes developed in separate branches, pushed to pull requests |
-| Review Process | Pull requests reviewed by at least one team member |
-| Code Quality | Pull requests must pass linting; code must be commented, readable, modularized |
+## Roles
+
+| Name | Role |
+|------|------|
+| Antonia Gaete Perez | Frontend, Web App Development |
+| Bryce Lutz | Design, Full Stack |
+| Charlie Chen | Design, Full-Stack |
+| Christian Bryant-VonHeeder | Communicator, Design, Full-Stack |
+| Zakarie Leskowsky | Design, Full Stack |
+
+
 
 ## Tooling
 
