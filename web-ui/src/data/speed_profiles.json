@@ -1,0 +1,10 @@
+{
+    "Usain Bolt": {
+        "speed": 19.19,
+        "distance": 200
+    },
+    "another profile": {
+        "speed": 30,
+        "distance": 200
+    }
+}
