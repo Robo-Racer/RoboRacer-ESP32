@@ -16,7 +16,7 @@ AsyncWebServer server(80);
 //This is for testing what our filesystem looks like inside the esp32
 //THANKS TO https://www.tutorialspoint.com/esp32_for_iot/esp32_for_iot_spiffs_storage.htm
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
-   Serial.printf("Listing directory: %s\r\n", dirname);
+   Serial.printf("\nListing directory: %s\r\n", dirname);
 
    File root = fs.open(dirname);
    if(!root){
@@ -79,10 +79,14 @@ void setup() {
   // });
 
   // Serve default index.html and demo.js
-  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
-      Serial.println("Received request for /");
-      request->send(SPIFFS, "/index.html", "text/html");
-  });
+   // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+   //     Serial.println("Received request for /");
+   //     request->send(SPIFFS, "/index.html", "text/html");
+   // });
+
+   //Trying a serveStatic solution
+   server.serveStatic("/", SPIFFS, "/");
+   server.serveStatic("/static/", SPIFFS, "/");
   
   //Start server, we can connect to it via device now
   server.begin();
