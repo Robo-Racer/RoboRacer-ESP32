@@ -1,3 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+html,
+body {
+  background-color: #333333;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  font-weight: 300;
+}
+
 .App {
-  text-align: center;
+  background-color: #333333;
+}
+
+.header-container h1 {
+  padding: 15px;
+  margin-left: 20px;
+}
+
+.outer-container {
+  display: flex;
+  justify-content: center;
+}
+
+.controls-container,
+.performance-container {
+  background-color: #4A4A4A;
+  margin: 40px;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.controls-container {
+  width: 600px;
+}
+
+.performance-container {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Performance Section */
+
+.data-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+.data-title {
+  font-weight: bold;
 }
