@@ -67,6 +67,7 @@ void setup() {
 
   //Get IP address for connecting
   //NOTE: SHOULD LATER LOOK INTO HAVING PERMANENT SET IP ADDRESS
+  //NOTE FOR NOTE: THE IP ADDRESS DOESN'T SEEM TO CHANGE? 
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
@@ -85,7 +86,9 @@ void setup() {
    // });
 
    //Trying a serveStatic solution
-   server.serveStatic("/", SPIFFS, "/");
+   //https://blockdev.io/react-on-the-esp32/
+   //IT WORKS. The issue was I am stupid.
+   server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
    server.serveStatic("/static/", SPIFFS, "/");
   
   //Start server, we can connect to it via device now
@@ -95,7 +98,7 @@ void setup() {
 void loop(){}
 
 //TESTER CODE
-//THIS CODE GUARUNTEED SPIFFS WAS WORKING AS INTENDED, it correctly read index.html
+//THIS CODE GUARUNTEED SPIFFS WAS WORKING AS INTENDED, it correctly read an index.html
 // #include <Arduino.h>
 // #include "SPIFFS.h"
 
