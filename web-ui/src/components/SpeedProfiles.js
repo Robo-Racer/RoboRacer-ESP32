@@ -103,7 +103,7 @@ function SpeedProfiles() {
                     value={time}
                     onChange={(e) => setTime(e.target.value)}
                     InputProps={{
-                        endAdornment: <InputAdornment position="end">m/s</InputAdornment>,
+                        endAdornment: <InputAdornment position="end">s</InputAdornment>,
                     }}
                 />
                 <TextField
