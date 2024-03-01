@@ -125,9 +125,6 @@ function SpeedProfiles() {
                     sx={{ m: 1 }}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">m/s</InputAdornment>,
-                    }}
                 />
                 <Button variant='contained' sx={{ m: 1 }} fullWidth onClick={handleSave}>Save</Button>
             </FormControl>
