@@ -74,7 +74,7 @@ void setup() {
 
   // THIS WORKS, THEREFORE WE KNOW THE CONNECTION OCCURS AND *CAN* SEND THINGS
   //SO WHY WON'T THE OTHER WORK? NOTE: PERHAPS THERE IS AN ISSUE WITH SPIFFS?
-  //IT WORKS NOW, I'M JUST STUPID
+  //IT WORKS NOW
   // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
   //     request->send(200, "text/html", "<h2>Hello ESP32!!!</h2");
   // });
@@ -87,12 +87,20 @@ void setup() {
 
    //Trying a serveStatic solution
    //https://blockdev.io/react-on-the-esp32/
-   //IT WORKS. The issue was I am stupid.
+   //IT WORKS
    server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
    server.serveStatic("/static/", SPIFFS, "/");
-  
-  //Start server, we can connect to it via device now
-  server.begin();
+
+   //Testing the sending capabilities (here we will just do to serial)
+   // File jsonFile = SPIFFS.open("/jsonData/test.json");
+   // Serial.println("Printing content of test.json:");
+
+   //  while (jsonFile.available()) {
+   //      Serial.write(jsonFile.read());
+   //  }
+
+   //Start server, we can connect to it via device now
+   server.begin();
 }
 
 void loop(){}
