@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && move .\\build\\static\\* build\\ && rmdir /s /q .\\build\\static && del /s /q .\\build\\*.LICENSE.txt",
+    "build": "react-scripts build && move .\\build\\static\\css build\\ && move .\\build\\static\\js build\\ && rmdir /s /q .\\build\\static && del /s /q .\\build\\*.LICENSE.txt",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
