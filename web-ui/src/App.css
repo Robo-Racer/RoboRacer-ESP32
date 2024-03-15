@@ -64,6 +64,7 @@ body {
 @media (max-width: 320px) {
   .start-stop-container {
     flex-direction: row;
+    margin-top: 15px;
   }
 }
 

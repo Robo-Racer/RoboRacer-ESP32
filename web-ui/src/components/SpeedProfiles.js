@@ -75,7 +75,7 @@ function SpeedProfiles() {
         <Box
             component="form"
             autoComplete="off"
-            sx={{ display: 'flex', flexDirection: 'column', width: 500, maxWidth: '100%' }}
+            sx={{ display: 'flex', flexDirection: 'column', width: 500, maxWidth: '100%', justifyContent: 'center' }}
         >
             {/* eventually this will send data to the robot */}
             <FormControl fullWidth >
