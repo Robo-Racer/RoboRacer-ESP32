@@ -37,6 +37,7 @@ body {
 .start-container {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
 }
 
 /* show start/stop button under controls on a smaller screen */
@@ -55,10 +56,23 @@ body {
 
 .start-stop-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
 
+@media (max-width: 320px) {
+  .start-stop-container {
+    flex-direction: row;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 1920px) {
+  .start-stop-container {
+    flex-direction: column;
+  }
+}
 
 .performance-container {
   width: 350px;
