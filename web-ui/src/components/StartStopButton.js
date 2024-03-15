@@ -1,24 +1,30 @@
 import React from 'react';
-import { Radio } from '@mui/material';
-import { styled } from '@mui/material';
-
-const CustomRadio = styled(Radio)(() => ({
-    '& .MuiSvgIcon-root': {
-        borderRadius: 0,
-        width: 100,
-        height: 100,
-    },
-    '& .MuiRadio-root': {
-        borderRadius: 0,
-    }
-}));
+import Button from '@mui/material/Button';
 
 function StartStopButton() {
 
+    function handleStart() {
+        console.log("Start RoboRacer");
+    }
+
+    function handleStop() {
+        console.log("Stop RoboRacer");
+    }
+
     return (
         <div className='start-stop-container'>
-            <CustomRadio />
-            <CustomRadio />
+            <Button
+                variant='contained'
+                sx={{ m: 5, width: 150, height: 150, fontSize: 30 }}
+                color='success'
+                onClick={handleStart}>
+                Start</Button>
+            <Button
+                variant='contained'
+                sx={{ m: 5, width: 150, height: 150, fontSize: 30 }}
+                color='error'
+                onClick={handleStop}>
+                Stop</Button>
         </div>
     );
 }
