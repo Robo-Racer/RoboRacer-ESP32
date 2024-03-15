@@ -23,7 +23,7 @@ function App() {
         <div className='outer-container'>
           <Controls />
 
-          <Performance />
+          {/* <Performance /> */}
         </div>
 
       </div>

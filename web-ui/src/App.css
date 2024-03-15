@@ -31,8 +31,34 @@ body {
 }
 
 .controls-container {
-  width: 600px;
+  width: 80%;
 }
+
+.start-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* show start/stop button under controls on a smaller screen */
+@media (max-width: 320px) {
+  .start-container {
+    flex-direction: column;
+  }
+}
+
+/* show start/stop button next to controls on a larger screen */
+@media (max-width: 1920px) {
+  .start-container {
+      flex-direction: row;
+  }
+} 
+
+.start-stop-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .performance-container {
   width: 350px;
