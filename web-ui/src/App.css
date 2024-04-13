@@ -25,7 +25,8 @@ body {
 }
 
 .controls-container,
-.performance-container {
+.performance-container,
+.dev-controls-container {
   background-color: #4A4A4A;
   margin: 40px;
   padding: 30px;
@@ -93,4 +94,25 @@ body {
 
 .data-title {
   font-weight: bold;
+}
+
+/* Dev Controls */
+
+.dev-controls-container {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 320px) {
+  .dev-controls-container {
+    flex-direction: row;
+    margin-top: 15px;
+  }
+}
+
+@media (max-width: 1920px) {
+  .dev-controls-container {
+    flex-direction: column;
+    width: 1000px;
+  }
 }
