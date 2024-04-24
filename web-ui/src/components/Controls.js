@@ -9,7 +9,7 @@ function Controls() {
 
             <div className='start-container'>
                 <SpeedProfiles />
-                {/* <StartStopButton /> */}
+                <StartStopButton />
             </div>
         </div>
     );
