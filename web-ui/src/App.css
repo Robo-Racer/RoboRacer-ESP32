@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+@import "../node_modules/react-vis/dist/style";
 
 html,
 body {
@@ -11,6 +12,8 @@ body {
 .App {
   background-color: #333333;
 }
+
+/* Controls Page */
 
 .header-container {
   display: flex;
@@ -32,6 +35,8 @@ body {
   padding: 30px;
   border-radius: 20px;
 }
+
+/* Controls */
 
 .controls-container {
   width: 80%;
@@ -57,6 +62,8 @@ body {
   }
 } 
 
+/* Start Stop Component */
+
 .start-stop-container {
   display: flex;
   flex-wrap: wrap;
@@ -77,13 +84,13 @@ body {
   }
 }
 
+/* Performance */
+
 .performance-container {
   width: 350px;
   display: flex;
   flex-direction: column;
 }
-
-/* Performance Section */
 
 .data-container {
   display: flex;

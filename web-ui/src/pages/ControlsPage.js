@@ -32,7 +32,7 @@ function ControlsPage() {
                 <div className='outer-container'>
                     <Controls />
 
-                    {/* <Performance /> */}
+                    <Performance />
                 </div>
 
             </div>
