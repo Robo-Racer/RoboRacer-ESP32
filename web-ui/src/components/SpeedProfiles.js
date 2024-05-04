@@ -75,13 +75,12 @@ function SpeedProfiles() {
         <Box
             component="form"
             autoComplete="off"
-            sx={{ display: 'flex', flexDirection: 'column', width: 500, maxWidth: '100%', justifyContent: 'center' }}
+            className='box'
         >
             {/* eventually this will send data to the robot */}
             <FormControl fullWidth >
                 <InputLabel id="simple-select-helper-label" sx={{ m: 1 }}>Speed Profile</InputLabel>
                 <Select
-                    fullWidth
                     id="speed-profiles"
                     label="Speed Profile"
                     sx={{ m: 1 }}
@@ -96,7 +95,6 @@ function SpeedProfiles() {
                 </Select>
 
                 <TextField
-                    fullWidth
                     label="Time"
                     id="time-input"
                     sx={{ m: 1 }}
@@ -107,7 +105,6 @@ function SpeedProfiles() {
                     }}
                 />
                 <TextField
-                    fullWidth
                     label="Distance"
                     id="distance-input"
                     sx={{ m: 1 }}
@@ -117,16 +114,15 @@ function SpeedProfiles() {
                         endAdornment: <InputAdornment position="end">m</InputAdornment>,
                     }}
                 />
-                <Button variant='contained' sx={{ m: 1 }} fullWidth onClick={handleClick}>Set</Button>
+                <Button variant='contained' sx={{ m: 1 }} onClick={handleClick}>Set</Button>
                 <TextField
-                    fullWidth
                     label="Speed Profile Name"
                     id="name-input"
                     sx={{ m: 1 }}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                 />
-                <Button variant='contained' sx={{ m: 1 }} fullWidth onClick={handleSave}>Save</Button>
+                <Button variant='contained' sx={{ m: 1 }} onClick={handleSave}>Save</Button>
             </FormControl>
         </Box>
     );

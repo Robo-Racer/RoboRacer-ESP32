@@ -7,10 +7,10 @@ function Controls() {
         <div className='controls-container'>
             <h1>Controls</h1>
 
-            <div className='start-container'>
-                <SpeedProfiles />
-                <StartStopButton />
-            </div>
+            {/* <div className='start-container'> */}
+                <SpeedProfiles className='inputs-container' />
+                <StartStopButton className='start-stop-container' />
+            {/* </div> */}
         </div>
     );
 }

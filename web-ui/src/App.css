@@ -3,123 +3,149 @@
 
 html,
 body {
-  background-color: #333333;
-  font-family: 'Roboto', sans-serif;
-  color: white;
-  font-weight: 300;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #333;
 }
 
 .App {
-  background-color: #333333;
+    background-color: #333;
+    display: grid;
+    grid-template-columns: 5vw auto 15vw 5vw;
+    grid-template-rows: 2vw 8vw 5vw 150vw 5vw 150vw 5vw;
 }
 
-/* Controls Page */
-
 .header-container {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  margin: 20px;
+    display: contents;
+}
+
+.header-container h1 {
+    grid-column: 2 / 3;
+    grid-row: 2;
+}
+
+.dev-button {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    width: 15vw;
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    color: orange;
+    border: orange;
+    background-color: #424242;
+    border-radius: 5px;
 }
 
 .outer-container {
-  display: flex;
-  justify-content: center;
+    grid-column: 2;
+    grid-row: 3;
+    display: contents;
 }
-
-.controls-container,
-.performance-container,
-.dev-controls-container {
-  background-color: #4A4A4A;
-  margin: 40px;
-  padding: 30px;
-  border-radius: 20px;
-}
-
-/* Controls */
 
 .controls-container {
-  width: 80%;
+    grid-column: 2 / 4;
+    grid-row: 4 / 5;
+
+    background-color: #4A4A4A;
+    border-radius: 20px;
+
+    display: grid;
+    grid-template-columns: 5vw 19.5vw 15vw 10vw 15vw 19.5vw 5vw;
+    grid-template-rows: 5vw 10vw 100vw 10vw 10vw auto 5vw;
 }
 
-.start-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
+.controls-container h1 {
+    grid-column: 2;
+    grid-row: 2;
 }
 
-/* show start/stop button under controls on a smaller screen */
-@media (max-width: 320px) {
-  .start-container {
-    flex-direction: column;
-  }
+.box {
+    grid-column: 2 / 7;
+    grid-row: 3 / 4;
 }
-
-/* show start/stop button next to controls on a larger screen */
-@media (max-width: 1920px) {
-  .start-container {
-      flex-direction: row;
-  }
-} 
-
-/* Start Stop Component */
 
 .start-stop-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+    display: contents;
 }
 
-@media (max-width: 320px) {
-  .start-stop-container {
-    flex-direction: row;
-    margin-top: 15px;
-  }
+.start-button {
+    grid-column: 3 / 4;
+    grid-row: 6 / 7;
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    color: white;
+    border: none;
+    background-color: #1f8839;
+    border-radius: 5px;
 }
 
-@media (max-width: 1920px) {
-  .start-stop-container {
-    flex-direction: column;
-  }
+.stop-button {
+    grid-column: 5 / 6;
+    grid-row: 6 / 7;
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    color: white;
+    border: none;
+    background-color: #cf1616;
+    border-radius: 5px;
 }
-
-/* Performance */
 
 .performance-container {
-  width: 350px;
-  display: flex;
-  flex-direction: column;
+    grid-column: 2 / 4;
+    grid-row: 6 / 7;
+
+    background-color: #4A4A4A;
+    border-radius: 20px;
+
+    display: grid;
+    grid-template-columns: 5vw 45vw auto 15vw 5vw;
+    grid-template-rows: 5vw 10vw 10vw 10vw 10vw 5vw auto 5vw;
+}
+
+.performance-container h1 {
+    grid-row: 2;
+    grid-column: 2;
 }
 
 .data-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  font-size: 20px;
+    display: contents;
 }
 
-.data-title {
-  font-weight: bold;
+.time-title {
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
 }
 
-/* Dev Controls */
-
-.dev-controls-container {
-  display: flex;
-  justify-content: center;
+.time {
+    grid-row: 3 / 4;
+    grid-column: 4 / 5;
 }
 
-@media (max-width: 320px) {
-  .dev-controls-container {
-    flex-direction: row;
-    margin-top: 15px;
-  }
+.distance-title {
+    grid-row: 4 / 5;
+    grid-column: 2 / 3;
 }
 
-@media (max-width: 1920px) {
-  .dev-controls-container {
-    flex-direction: column;
-    width: 1000px;
-  }
+.distance {
+    grid-row: 4 / 5;
+    grid-column: 4 / 5;
+}
+
+.speed-title {
+    grid-row: 5 / 6;
+    grid-column: 2 / 3;
+}
+
+.speed {
+    grid-row: 5 / 6;
+    grid-column: 4 / 5;
+}
+
+.graph-container {
+    grid-row: 7;
+    grid-column: 2 / 5;
 }
