@@ -149,3 +149,27 @@ body {
     grid-row: 7;
     grid-column: 2 / 5;
 }
+
+.controls-button {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    width: fit-content;
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    color: orange;
+    border: orange;
+    background-color: #424242;
+    border-radius: 5px;
+}
+
+.dev-outer-container {
+    grid-column: 2;
+    grid-row: 4;
+}
+
+.dev-controls-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

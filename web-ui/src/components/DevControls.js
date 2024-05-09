@@ -11,7 +11,7 @@ function DevControls() {
             <Joystick
                 stickColor='orange'
                 baseColor='black'
-                size={300}
+                size={150}
                 throttle={200}
                 move={handleMove}
                 className="joystick" />

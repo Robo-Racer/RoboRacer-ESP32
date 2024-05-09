@@ -16,6 +16,14 @@ function Performance() {
     const [speed, setSpeed] = useState(0);
     const [data, setData] = useState(graphData);
 
+    function updateGraph() { // when will we call updateGraph?
+        fetch('/performanceMetrics')
+            .then(data => {
+                console.log(data);
+                setData(data)
+            })
+    }
+
     return (
         <div className='performance-container'>
             <h1>Performance</h1>
