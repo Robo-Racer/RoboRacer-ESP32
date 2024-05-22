@@ -164,7 +164,7 @@ void setup()
 
     // Setup Access Point with SSID and password
     Serial.print("Setting AP (Access Point)…");
-    WiFi.softAP(ssid, password);
+    WiFi.softAP(ssid, password, 1, 0, 1); //channel (default 1), ssid_hidden (default 0), max_connections set to 1
 
     // Get IP address for connecting
     // NOTE: SHOULD LATER LOOK INTO HAVING PERMANENT SET IP ADDRESS
@@ -220,9 +220,9 @@ void setup()
          }
          request->send(200, "text/plain", "true");
       } 
-      
-      
-      
+      if (request->method() == HTTP_GET) {
+        //Nothing yet
+      }
       });
 
     server.onNotFound(notFound);
