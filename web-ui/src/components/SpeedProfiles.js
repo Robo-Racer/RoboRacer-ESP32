@@ -51,7 +51,7 @@ function SpeedProfiles() {
 
         console.log('submit inputs:', data);
 
-        fetch('/postData', { // ZAK: CHANGE PATH HERE
+        fetch('/postData', { 
             method: 'POST',
             body: JSON.stringify(data)
         })
