@@ -6,7 +6,7 @@ import os
 
 def before_build_spiffs(source, target, env):
     print("Building React App...")
-    env.Execute("cd web-ui && npm install && npm run build")
+    env.Execute("cd web-ui && npm run build")
     print("React App built!")
 
     print("Removing old SPIFFS image...")
