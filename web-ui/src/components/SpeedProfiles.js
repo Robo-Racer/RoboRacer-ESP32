@@ -59,6 +59,8 @@ function SpeedProfiles() {
 
     // save speed profile to json /data/speed_profiles.json
     function handleSave() {
+        alert('Functionality not yet implemented!')
+
         const data = {
             name: name,
             time: time,
