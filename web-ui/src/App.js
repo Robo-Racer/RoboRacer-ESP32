@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ControlsPage from './pages/ControlsPage';
 import DevPage from "./pages/DevPage";
 
 function App() {
+  // source: https://ably.com/blog/websockets-react-tutorial
+  const connection = useRef(null);
+
+  useEffect(() => {
+    const socket = new WebSocket("ws://127.0.0.1:8000") // change to server IP
+
+    // Connection opened
+    socket.addEventListener("open", (event) => {
+      socket.send("Connection established")
+    })
+
+    // Listen for messages
+    socket.addEventListener("message", (event) => {
+      // console.log("Message from server ", event.data)
+      alert("Message from server ", event.data)
+    })
+
+    connection.current = ws
+
+    return () => connection.close()
+  }, []);
 
   return (
     <BrowserRouter>
