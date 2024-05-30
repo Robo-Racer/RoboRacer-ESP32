@@ -30,7 +30,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<ControlsPage />}></Route>
+        <Route path="/" element={<ControlsPage message={message} />}></Route>
         <Route path="/dev" element={<DevPage />}></Route>
       </Routes>
     </BrowserRouter>

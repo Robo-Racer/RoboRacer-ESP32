@@ -11,7 +11,7 @@ const darkTheme = createTheme({
     },
 });
 
-function ControlsPage() {
+function ControlsPage({ message }) {
     const navigate = useNavigate();
 
     const devPage = () => {
@@ -26,6 +26,10 @@ function ControlsPage() {
                     <h1>RoboRacer</h1>
 
                     <button onClick={devPage} className='dev-button'>DEV</button>
+                </div>
+
+                <div className='ws-message-container'>
+                    <p>{message}</p>
                 </div>
 
                 <div className='outer-container'>

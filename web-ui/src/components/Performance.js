@@ -2,13 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 import graphData from '../data/graph_data.json';
 
-import {
-    XYPlot,
-    LineSeries,
-    XAxis,
-    YAxis,
-    Crosshair,
-} from 'react-vis';
+// imports for performance graph (lines 46-60), not implemented yet
+// import {
+//     XYPlot,
+//     LineSeries,
+//     XAxis,
+//     YAxis,
+//     Crosshair,
+// } from 'react-vis';
 
 function Performance() {
     const [time, setTime] = useState(0);
@@ -16,13 +17,14 @@ function Performance() {
     const [speed, setSpeed] = useState(0);
     const [data, setData] = useState(graphData);
 
-    function updateGraph() { // when will we call updateGraph?
-        fetch('/performanceMetrics')
-            .then(data => {
-                console.log(data);
-                setData(data)
-            })
-    }
+    // for performance graph, implement with follow-me mode
+    // function updateGraph() { // when will we call updateGraph?
+    //     fetch('/performanceMetrics')
+    //         .then(data => {
+    //             console.log(data);
+    //             setData(data)
+    //         })
+    // }
 
     return (
         <div className='performance-container'>
@@ -43,7 +45,7 @@ function Performance() {
                 <p className='speed'>{speed} m/s</p>
             </div>
 
-            <div className='graph-container'>
+            {/* <div className='graph-container'>
                 <XYPlot height={250} width={275}>
                     <XAxis style={{
                         text: { stroke: 'white', fontWeight: 100 }
@@ -56,7 +58,7 @@ function Performance() {
 
                     <LineSeries data={data} color='orange' />
                 </XYPlot>
-            </div>
+            </div> */}
         </div>
     );
 }
