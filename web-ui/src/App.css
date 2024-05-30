@@ -11,24 +11,18 @@ body {
 
 .App {
     background-color: #333;
-    display: grid;
-    grid-template-columns: 5vw auto 15vw 5vw;
-    grid-template-rows: 2vw 8vw 5vw 150vw 5vw 150vw 5vw;
+    padding: 10px;
 }
 
 .header-container {
-    display: contents;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 
-.header-container h1 {
-    grid-column: 2 / 3;
-    grid-row: 2;
-}
-
-.dev-button {
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
-    width: 15vw;
+.dev-button,
+.controls-button {
     text-align: center;
     font-size: small;
     font-weight: bold;
@@ -36,140 +30,74 @@ body {
     border: orange;
     background-color: #424242;
     border-radius: 5px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 .outer-container {
-    grid-column: 2;
-    grid-row: 3;
-    display: contents;
+    display: flex;
+    flex-direction: column;
 }
 
-.controls-container {
-    grid-column: 2 / 4;
-    grid-row: 4 / 5;
-
-    background-color: #4A4A4A;
-    border-radius: 20px;
-
-    display: grid;
-    grid-template-columns: 5vw 19.5vw 15vw 10vw 15vw 19.5vw 5vw;
-    grid-template-rows: 5vw 10vw 100vw 10vw 10vw auto 5vw;
+.ws-message-container {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    height: fit-content;
+    background-color: rgb(26, 26, 26);
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'Courier New', Courier, monospace;
 }
 
-.controls-container h1 {
-    grid-column: 2;
-    grid-row: 2;
+.controls-header,
+.performance-header {
+    margin-top: 20px;
 }
 
 .box {
-    grid-column: 2 / 7;
-    grid-row: 3 / 4;
+    margin-bottom: 20px;
 }
 
 .start-stop-container {
-    display: contents;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 20px;
 }
 
 .start-button {
-    grid-column: 3 / 4;
-    grid-row: 6 / 7;
-    text-align: center;
-    font-size: small;
     font-weight: bold;
     color: white;
     border: none;
     background-color: #1f8839;
     border-radius: 5px;
+    padding: 10px;
+    margin-right: 20px;
 }
 
 .stop-button {
-    grid-column: 5 / 6;
-    grid-row: 6 / 7;
-    text-align: center;
-    font-size: small;
     font-weight: bold;
     color: white;
     border: none;
     background-color: #cf1616;
     border-radius: 5px;
+    padding: 10px;
+    margin-right: 20px;
 }
 
-.performance-container {
-    grid-column: 2 / 4;
-    grid-row: 6 / 7;
-
-    background-color: #4A4A4A;
-    border-radius: 20px;
-
-    display: grid;
-    grid-template-columns: 5vw 45vw auto 15vw 5vw;
-    grid-template-rows: 5vw 10vw 10vw 10vw 10vw 5vw auto 5vw;
-}
-
-.performance-container h1 {
-    grid-row: 2;
-    grid-column: 2;
+.results-container {
+    margin: 15px;
 }
 
 .data-container {
-    display: contents;
-}
-
-.time-title {
-    grid-row: 3 / 4;
-    grid-column: 2 / 3;
-}
-
-.time {
-    grid-row: 3 / 4;
-    grid-column: 4 / 5;
-}
-
-.distance-title {
-    grid-row: 4 / 5;
-    grid-column: 2 / 3;
-}
-
-.distance {
-    grid-row: 4 / 5;
-    grid-column: 4 / 5;
-}
-
-.speed-title {
-    grid-row: 5 / 6;
-    grid-column: 2 / 3;
-}
-
-.speed {
-    grid-row: 5 / 6;
-    grid-column: 4 / 5;
-}
-
-.graph-container {
-    grid-row: 7;
-    grid-column: 2 / 5;
-}
-
-.controls-button {
-    grid-column: 3 / 4;
-    grid-row: 2 / 3;
-    width: fit-content;
-    text-align: center;
-    font-size: small;
-    font-weight: bold;
-    color: orange;
-    border: orange;
-    background-color: #424242;
-    border-radius: 5px;
-}
-
-.dev-outer-container {
-    grid-column: 2;
-    grid-row: 4;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .dev-controls-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin: 20px;
+    margin-top: 40px;
 }

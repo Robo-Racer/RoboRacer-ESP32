@@ -5,12 +5,10 @@ import SpeedProfiles from './SpeedProfiles';
 function Controls() {
     return (
         <div className='controls-container'>
-            <h1>Controls</h1>
+            <h1 className='controls-header'>Controls</h1>
 
-            {/* <div className='start-container'> */}
-                <SpeedProfiles className='inputs-container' />
-                <StartStopButton className='start-stop-container' />
-            {/* </div> */}
+            <SpeedProfiles />
+            <StartStopButton />
         </div>
     );
 }

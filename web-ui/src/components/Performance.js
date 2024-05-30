@@ -28,24 +28,25 @@ function Performance() {
 
     return (
         <div className='performance-container'>
-            <h1>Performance</h1>
+            <h1 className='performance-header'>Performance</h1>
 
-            <div className='data-container'>
-                <p className='time-title'>Time</p>
-                <p className='time'>{time} s</p>
-            </div>
+            <div className='results-container'>
+                <div className='data-container'>
+                    <p className='time-title'>Time</p>
+                    <p className='time'>{time} s</p>
+                </div>
 
-            <div className='data-container'>
-                <p className='distance-title'>Distance</p>
-                <p className='distance'>{distance} m</p>
-            </div>
+                <div className='data-container'>
+                    <p className='distance-title'>Distance</p>
+                    <p className='distance'>{distance} m</p>
+                </div>
 
-            <div className='data-container'>
-                <p className='speed-title'>Speed</p>
-                <p className='speed'>{speed} m/s</p>
-            </div>
+                <div className='data-container'>
+                    <p className='speed-title'>Speed</p>
+                    <p className='speed'>{speed} m/s</p>
+                </div>
 
-            {/* <div className='graph-container'>
+                {/* <div className='graph-container'>
                 <XYPlot height={250} width={275}>
                     <XAxis style={{
                         text: { stroke: 'white', fontWeight: 100 }
@@ -59,6 +60,7 @@ function Performance() {
                     <LineSeries data={data} color='orange' />
                 </XYPlot>
             </div> */}
+            </div>
         </div>
     );
 }

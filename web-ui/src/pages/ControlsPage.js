@@ -28,11 +28,12 @@ function ControlsPage({ message }) {
                     <button onClick={devPage} className='dev-button'>DEV</button>
                 </div>
 
-                <div className='ws-message-container'>
-                    <p>{message}</p>
-                </div>
-
                 <div className='outer-container'>
+                    <div className='ws-message-container'>
+                        <p>Message from the server:</p>
+                        <p className='ws-message'>{message}</p>
+                    </div>
+
                     <Controls />
 
                     <Performance />
