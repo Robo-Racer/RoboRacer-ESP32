@@ -8,8 +8,8 @@
 #define FORMAT_SPIFFS_IF_FAILED true
 
 #define PORTENTA_BAUDRATE 9600
-#define UART_TX_PIN 16
-#define UART_RX_PIN 17
+#define UART_TX 43
+#define UART_RX 44
 
 // Wifi name and password
 const char *ssid = "ESP32-Access-Point";
@@ -20,10 +20,61 @@ AsyncWebServer server(80);
 String receivedMessage;
 
 
+// Create a WebSocket object
+AsyncWebSocket ws("/ws");
+
+struct uartPacket {
+    String header;
+    String data;
+};
+
+//THINGS TO GET WORKING:
+//Send messages to user 
+//Communication protocol to H7
+
+
+void notifyClients(String message) {
+  ws.textAll(message);
+}
+
+void handleWebSocketMessage(void *arg, uint8_t *data, size_t len) {
+  AwsFrameInfo *info = (AwsFrameInfo*)arg;
+  if (info->final && info->index == 0 && info->len == len && info->opcode == WS_TEXT) {
+    //data[len] = 0;
+    //String message = (char*)data;
+    // Check if the message is "getReadings"
+    //if (strcmp((char*)data, "getReadings") == 0) {
+      //if it is, send current sensor readings
+      Serial.print((char*)data);
+    //}
+  }
+}
+
+void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType type, void *arg, uint8_t *data, size_t len) {
+  switch (type) {
+    case WS_EVT_CONNECT:
+      Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
+      break;
+    case WS_EVT_DISCONNECT:
+      Serial.printf("WebSocket client #%u disconnected\n", client->id());
+      break;
+    case WS_EVT_DATA:
+      handleWebSocketMessage(arg, data, len);
+      break;
+    case WS_EVT_PONG:
+    case WS_EVT_ERROR:
+      break;
+  }
+}
+
+void initWebSocket() {
+  ws.onEvent(onEvent);
+  server.addHandler(&ws);
+}
+
 // This is for testing what our filesystem looks like inside the esp32
 // THANKS TO https://www.tutorialspoint.com/esp32_for_iot/esp32_for_iot_spiffs_storage.htm
-void listDir(fs::FS &fs, const char *dirname, uint8_t levels)
-{
+void listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
     Serial.printf("\nListing directory: %s\r\n", dirname);
 
     File root = fs.open(dirname);
@@ -88,26 +139,26 @@ bool handlepostData(AsyncWebServerRequest *request, uint8_t *datas)
 
     if (jsonDoc.containsKey("name")){
         String _name = jsonDoc["name"].as<String>();
-        Serial.println(_name);
+        Serial1.println(_name);
     }
     if (jsonDoc.containsKey("time")){
         String _time = jsonDoc["time"].as<String>();
-        Serial.println(_time);
+        Serial1.println(_time);
     }
     if (jsonDoc.containsKey("distance")){
         String _distance = jsonDoc["distance"].as<String>();
-        Serial.println(_distance);
+        Serial1.println(_distance);
     }
     if (jsonDoc.containsKey("direction")){
         String _direction = jsonDoc["direction"].as<String>();
-        Serial.println(_direction);
+        Serial1.println(_direction);
     }
     if (jsonDoc.containsKey("directive")){
         String _directive = jsonDoc["directive"].as<String>();
-        Serial.println(_directive);
+        Serial1.println(_directive);
     }
 
-
+    Serial1.println("\n");
     // if (!jsonDoc.containsKey("time"))
     //     return false;
     // String _time = jsonDoc["time"].as<String>();
@@ -123,34 +174,26 @@ bool handlepostData(AsyncWebServerRequest *request, uint8_t *datas)
 
 void setup()
 {
-    // Baud rate for esp32s3 is 460800, communication with Serial Monitor
+    // Baud rate for is 460800, communication with Serial Monitor
     Serial.begin(460800);
 
     // Setup communication with Portenta H7
-    Serial1.begin(PORTENTA_BAUDRATE, SERIAL_8N1, UART_RX_PIN, UART_TX_PIN);
+    // Serial1.begin(PORTENTA_BAUDRATE, SERIAL_8N1, UART_RX, UART_TX);
 
-/*  // To read from Serial1
-    while (Serial1.available() > 0) {
-        char receivedChar = Serial1.read();
-        if (receivedChar == '\n') {
-            Serial.println(receivedMessage);  // Print the received message in the Serial monitor
-            receivedMessage = "";  // Reset the received message
-        } else {
-            receivedMessage += receivedChar;  // Append characters to the received message
-        }
-    }
+    delay(1000);
 
-    OR
-
-    if(Serial1.available() > 0){
-        recievedMessage = Serial.readStringUntil('\n);
-    }
-*/
-
-/*  // To Write to Serial1
-    // (Depending on what we want to do this is all we need)
-    Serial1.println(message);   //MAKE SURE MESSAGE ENDS WITH A '\n' on either side
-*/
+    // Serial1.println("y");
+    // uartPacket packet;
+    // while(1){
+    //     while (Serial1.available() > 0) {
+    //         char receivedChar = Serial1.read();
+    //         if (receivedChar == 'y') {
+    //             Serial.println(receivedMessage);  // Print the received message in the Serial monitor
+    //             break;
+    //         }
+    //     }
+    // }
+    
 
     // Set up file system via SPIFFS
     if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED))
@@ -160,7 +203,8 @@ void setup()
     }
 
     // Check our directories
-    listDir(SPIFFS, "/", 0);
+    // listDir(SPIFFS, "/", 0);
+
 
     // Setup Access Point with SSID and password
     Serial.print("Setting AP (Access Point)…");
@@ -169,14 +213,19 @@ void setup()
     // Get IP address for connecting
     // NOTE: SHOULD LATER LOOK INTO HAVING PERMANENT SET IP ADDRESS
     // NOTE FOR NOTE: THE IP ADDRESS DOESN'T SEEM TO CHANGE?
+    //IP Address: 192.168.4.1
     IPAddress IP = WiFi.softAPIP();
     Serial.print("AP IP address: ");
     Serial.println(IP);
 
     // Trying a serveStatic solution
     // https://blockdev.io/react-on-the-esp32/
+    // server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
+    //     request->send(SPIFFS, "/index.html", "text/html");
+    // });
+
     server.serveStatic("/", SPIFFS, "/").setDefaultFile("index.html");
-    server.serveStatic("/static/", SPIFFS, "/");
+    // server.serveStatic("/static/", SPIFFS, "/");
 
     // server.on("/postData", HTTP_POST, [](AsyncWebServerRequest *request){
     //    Serial.println("Received request for /postData");
@@ -226,55 +275,16 @@ void setup()
       });
 
     server.onNotFound(notFound);
+    
+
+    initWebSocket();
 
     // Start server, we can connect to it via device now
     server.begin();
 }
 
-void loop() {}
-
-
-
-
-
-/*
-//Code for Portenta?
-void setup() {
-    Serial.begin(460800);
-
-    while(1){
-        if (Serial.available() > 0) {
-            String message = Serial.readStringUntil('\n');
-            if (message == "Hello") {
-                break;
-            }
-        }
-    }
-}
-
 void loop() {
-    //Direction Grabbing from Dev Page
-    if(Serial.available() > 0) {
-        String message = Serial.readStringUntil('\n');
-
-        if (message == "left"){
-            //Code to go left
-        } else if (message == "right") {
-            //Code to go right
-        } else if (message == "forward") {
-            //Code to go forward
-        } else if (message == "back") {
-            //Code to go backward
-        } else if (message == "stop") {
-            //Code to stop
-        }
-    }
-
-    //Obstacle Avoidance
-
-    //Color Sensing
-
-    //When finished with code
-
+    // ws.cleanupClients();
+    notifyClients("Websocket Message sent?");
+    delay(1000);
 }
-*/

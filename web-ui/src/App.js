@@ -9,7 +9,7 @@ function App() {
   const connection = useRef(null);
 
   useEffect(() => {
-    const socket = new WebSocket("ws://127.0.0.1:8000") // change to server IP
+    const socket = new WebSocket("ws://192.168.4.1/ws") // change to server IP
 
     // Connection opened
     socket.addEventListener("open", (event) => {
@@ -18,11 +18,11 @@ function App() {
 
     // Listen for messages
     socket.addEventListener("message", (event) => {
-      // console.log("Message from server ", event.data)
-      alert("Message from server ", event.data)
+      console.log("Message from server ", event.data)
+    //   alert("Message from server ", event.data)
     })
 
-    connection.current = ws
+    connection.current = socket
 
     return () => connection.close()
   }, []);
