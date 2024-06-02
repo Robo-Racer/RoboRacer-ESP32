@@ -285,6 +285,16 @@ void setup()
 
 void loop() {
     // ws.cleanupClients();
-    notifyClients("Websocket Message sent?");
+    if(ws.availableForWriteAll()){
+        notifyClients("Websocket Message sent?");
+    }
     delay(1000);
 }
+
+
+//Send data
+//Wait half a second
+//If no confirmation recieved, send data again
+//Do this 3 times
+//If no confirmation, error out message to user
+//if confirmation recieved, good.
