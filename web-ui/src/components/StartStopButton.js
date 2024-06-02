@@ -5,22 +5,26 @@ function StartStopButton() {
     function handleStart() {
         console.log("Start RoboRacer");
 
+        const data = {
+            directive: 'start'
+        }
+
         fetch('/start', {
             method: 'POST',
-            body: {
-                directive: 'start'
-            } 
+            body: JSON.stringify(data)
         })
     }
 
     function handleStop() {
         console.log("Stop RoboRacer");
 
+        const data = {
+            directive: 'stop'
+        }
+
         fetch('/stop', {
             method: 'POST',
-            body: {
-                directive: 'stop'
-            }
+            body: JSON.stringify(data)
         })
     }
 

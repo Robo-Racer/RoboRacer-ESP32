@@ -11,7 +11,7 @@ const darkTheme = createTheme({
     },
 });
 
-function ControlsPage() {
+function ControlsPage({ message }) {
     const navigate = useNavigate();
 
     const devPage = () => {
@@ -29,6 +29,11 @@ function ControlsPage() {
                 </div>
 
                 <div className='outer-container'>
+                    <div className='ws-message-container'>
+                        <p>Message from the server:</p>
+                        <p className='ws-message'>{message}</p>
+                    </div>
+
                     <Controls />
 
                     <Performance />
