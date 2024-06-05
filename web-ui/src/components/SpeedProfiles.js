@@ -9,6 +9,9 @@ import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import { useMemo } from 'react';
 import speedProfilesData from '../data/speed_profiles.json';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 // grab the saved profiles from the json to populate dropdown
 function useSpeedProfiles() {
@@ -23,7 +26,7 @@ function useSpeedProfiles() {
 function SpeedProfiles() {
 
     const speedProfiles = useSpeedProfiles();
-    const [time, setTime] = useState('');
+    const [time, setTime] = useState(null);
     const [distance, setDistance] = useState('');
     const [selectedProfile, setSelectedProfile] = useState("");
     const [name, setName] = useState("");
@@ -96,16 +99,18 @@ function SpeedProfiles() {
                     ))}
                 </Select>
 
-                <TextField
-                    label="Time"
-                    id="time-input"
-                    sx={{ m: 1 }}
-                    value={time}
-                    onChange={(e) => setTime(e.target.value)}
-                    InputProps={{
-                        endAdornment: <InputAdornment position="end">s</InputAdornment>,
-                    }}
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TimePicker
+                        label="Time"
+                        id="time-input"
+                        sx={{ m: 1 }}
+                        value={time}
+                        views={['minutes', 'seconds']}
+                        format="mm:ss"
+                        onChange={(newTime) => setTime(newTime)}
+                        onError={() => {}}
+                    />
+                </LocalizationProvider>
                 <TextField
                     label="Distance"
                     id="distance-input"

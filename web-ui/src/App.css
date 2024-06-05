@@ -85,6 +85,26 @@ body {
     margin-right: 20px;
 }
 
+.start-button:active {
+    font-weight: bold;
+    color: white;
+    border: none;
+    background-color: #124d21;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.stop-button:active {
+    font-weight: bold;
+    color: white;
+    border: none;
+    background-color: #860d0d;
+    border-radius: 5px;
+    padding: 10px;
+    margin-right: 20px;
+}
+
 .results-container {
     margin: 15px;
 }
