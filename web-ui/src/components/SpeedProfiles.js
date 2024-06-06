@@ -7,37 +7,40 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-import { useMemo } from 'react';
 import speedProfilesData from '../data/speed_profiles.json';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-
-// grab the saved profiles from the json to populate dropdown
-function useSpeedProfiles() {
-    return useMemo(() => {
-        return Object.keys(speedProfilesData).map((profileName) => ({
-            value: profileName,
-            label: profileName,
-        }));
-    }, []);
-}
 
 function SpeedProfiles() {
-
-    const speedProfiles = useSpeedProfiles();
+    const speedProfiles = populateSpeedProfiles();
     const [time, setTime] = useState(null);
     const [distance, setDistance] = useState('');
     const [selectedProfile, setSelectedProfile] = useState("");
     const [name, setName] = useState("");
+
+    async function getSpeedProfiles() {
+        let response = await fetch('/speedProfiles', {
+            method: 'GET',
+        })
+
+        console.log("response:", response);
+    }
+
+    // grab the saved profiles from the json to populate dropdown
+    function populateSpeedProfiles() {
+        return Object.keys(speedProfilesData).map((profileName) => ({
+            value: profileName,
+            label: profileName,
+        }));
+    }
 
     function handleSelect(event) {
         const select = event.target.value;
         setSelectedProfile(select);
 
         if (select !== 'custom') {
-            setTime(speedProfilesData[select].time);
-            setDistance(speedProfilesData[select].distance);
+            setTime(speedProfiles[select].time);
+            setDistance(speedProfiles[select].distance);
         }
         else {
             setTime('');
@@ -47,9 +50,13 @@ function SpeedProfiles() {
 
     // submit inputs and send to robot
     function handleClick() {
+        // format time to be in seconds, distance to be an integer
+        let seconds = time.second() + (time.minute() * 60);
+        let meters = parseInt(distance);
+
         const data = {
-            time: time,
-            distance: distance
+            time: seconds,
+            distance: meters
         }
 
         console.log('submit inputs:', data);
@@ -60,15 +67,23 @@ function SpeedProfiles() {
         })
     }
 
-    // save speed profile to json /data/speed_profiles.json
+    // send updated speed profile to robot
     function handleSave() {
-        alert('Functionality not yet implemented!')
+        // format time to be in seconds, distance to be an integer
+        let seconds = time.second() + (time.minute() * 60);
+        let meters = parseInt(distance);
 
+        console.log("name:", name)
+        // append new speed profile and send entire JSON
         const data = {
-            name: name,
-            time: time,
-            distance: distance
+            ...speedProfilesData,
+            [name]: {
+                time: seconds,
+                distance: meters
+            }
         }
+
+        console.log("new speed profiles", data)
 
         fetch('/addSpeedProfile', {
             method: 'POST',
@@ -82,7 +97,6 @@ function SpeedProfiles() {
             autoComplete="off"
             className='box'
         >
-            {/* eventually this will send data to the robot */}
             <FormControl fullWidth >
                 <InputLabel id="simple-select-helper-label" sx={{ m: 1 }}>Speed Profile</InputLabel>
                 <Select
@@ -100,7 +114,7 @@ function SpeedProfiles() {
                 </Select>
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <TimePicker
+                    <DesktopTimePicker
                         label="Time"
                         id="time-input"
                         sx={{ m: 1 }}
