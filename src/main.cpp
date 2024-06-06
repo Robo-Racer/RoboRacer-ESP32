@@ -55,10 +55,10 @@ messageHeader mHeader;
 dataHeader dHeader;
 char data[numChars] = {0};
 
-messageHeader serial_get_message();
+// messageHeader serial_get_message();
 // void parseData();
-void serial_send_message(messageHeader mHeader, dataHeader dHeader, String data);
-void process_data();
+// void serial_send_message(messageHeader mHeader, dataHeader dHeader, String data);
+// void process_data();
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels);
 
 void setup()
@@ -69,7 +69,7 @@ void setup()
     delay(500);
 
     // Setup communication with Portenta H7
-    Serial1.begin(PORTENTA_BAUDRATE, SERIAL_8N1, UART_RX, UART_TX);
+    // Serial1.begin(PORTENTA_BAUDRATE, SERIAL_8N1, UART_RX, UART_TX);
     delay(500);
 
 
@@ -112,38 +112,38 @@ void setup()
     initWebSocket();
     server.begin();    // Start server, we can connect to it via device now
 
-    while (Serial1.available() > 0) {
-        Serial1.read(); //clear buffer
-    }
+    // while (Serial1.available() > 0) {
+    //     Serial1.read(); //clear buffer
+    // }
 
     //Send READY to H7
-    serial_send_message(READYTOSTART, DATA_ERR, " ");
+    // serial_send_message(READYTOSTART, DATA_ERR, " ");
     // Serial1.println("3,-1");
     Serial.print("Sent Ready to start to Portenta!");
 
-    char c;
-    //Wait for READY from H7
-    messageHeader mH;
-    while(mH != READYTOSTART){
-        while(Serial1.available() > 0){
-            mH = serial_get_message();
-            Serial.print("Before break: ");
-            Serial.println(mH);
-            if(mH == READYTOSTART){
-                break;
-            }
-        }
-    }
-    Serial.print("Got Ready to start to Portenta!");
+    // char c;
+    // Wait for READY from H7
+    // messageHeader mH;
+    // while(mH != READYTOSTART){
+    //     while(Serial1.available() > 0){
+    //         mH = serial_get_message();
+    //         Serial.print("Before break: ");
+    //         Serial.println(mH);
+    //         if(mH == READYTOSTART){
+    //             break;
+    //         }
+    //     }
+    // }
+    // Serial.print("Got Ready to start to Portenta!");
     starting = 1;
 }
 
 void loop() {
-    if(Serial1.available() > 0){
-        messageHeader mH = serial_get_message();
-    } else {
-        //Do Nothing
-    }
+    // if(Serial1.available() > 0){
+    //     messageHeader mH = serial_get_message();
+    // } else {
+    //     //Do Nothing
+    // }
 }
 
 // This is for testing what our filesystem looks like inside the esp32
@@ -258,13 +258,13 @@ bool handlepostData(AsyncWebServerRequest *request, uint8_t *datas, int& startin
     if (jsonDoc.containsKey("directive")){
         String _directive = jsonDoc["directive"].as<String>();
         Serial.println(_directive);
-        serial_send_message(STOP, DATA_ERR, " ");
-        Serial1.println(_directive);
-        if(_directive == "STOP"){
-            serial_send_message(STOP, DATA_ERR, " ");
-        } else if (_directive == "START") {
-            serial_send_message(START, DATA_ERR, " ");
-        }
+        // serial_send_message(STOP, DATA_ERR, " ");
+        // Serial1.println(_directive);
+        // if(_directive == "STOP"){
+        //     serial_send_message(STOP, DATA_ERR, " ");
+        // } else if (_directive == "START") {
+        //     serial_send_message(START, DATA_ERR, " ");
+        // }
     }
 
     if(jsonDoc.containsKey("addSpeedProfile")){
@@ -274,7 +274,7 @@ bool handlepostData(AsyncWebServerRequest *request, uint8_t *datas, int& startin
         newFile.close();
 
         //Test file
-        fs:File testFile = SPIFFS.open("/speedProfiles.json", "w");
+        File testFile = SPIFFS.open("/speedProfiles.json", "w");
         Serial.print(testFile.readString());
         testFile.close();
     }
@@ -301,6 +301,8 @@ bool handlegetData(AsyncWebServerRequest *request, uint8_t *datas){
         request->send(file, "/speedProfiles.json", "text/json", false, nullptr);
         file.close();
     }
+
+    return true;
 }
 
 
@@ -317,119 +319,119 @@ void notFound(AsyncWebServerRequest *request)
 }
 
 
-messageHeader serial_get_message(){
+// messageHeader serial_get_message(){
 
-    String recievedMessage;
-    String headerStr = "ok";
-    messageHeader recievedHeader;
+//     String recievedMessage;
+//     String headerStr = "ok";
+//     messageHeader recievedHeader;
 
-    while(Serial1.available() > 0){
-      if(Serial1.available() > 0){
-        headerStr = Serial1.readStringUntil(',');
-      }
-      Serial.println(headerStr);
-      Serial.println(headerStr.toInt());
+//     while(Serial1.available() > 0){
+//       if(Serial1.available() > 0){
+//         headerStr = Serial1.readStringUntil(',');
+//       }
+//       Serial.println(headerStr);
+//       Serial.println(headerStr.toInt());
 
-      recievedHeader = (messageHeader)(headerStr.toInt());
+//       recievedHeader = (messageHeader)(headerStr.toInt());
 
-      Serial.println(recievedHeader);
+//       Serial.println(recievedHeader);
 
-      switch(recievedHeader){
-        case COMM_ERR:
-          recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
-          notifyClients(recievedMessage);
-          break;
+//       switch(recievedHeader){
+//         case COMM_ERR:
+//           recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
+//           notifyClients(recievedMessage);
+//           break;
 
-        case STOP:
-          recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
-          break;
+//         case STOP:
+//           recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
+//           break;
 
-        case START:
-          recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
-          break;
+//         case START:
+//           recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
+//           break;
 
-        case READYTOSTART:
-          Serial.println("WE GOT READYTOSTART");
-          recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
-          notifyClients("The RoboRacer is ready to start!");
-          break;
+//         case READYTOSTART:
+//           Serial.println("WE GOT READYTOSTART");
+//           recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
+//           notifyClients("The RoboRacer is ready to start!");
+//           break;
 
-        case DATA:
-          process_data();
-          break;
+//         case DATA:
+//           process_data();
+//           break;
 
-        default:
-          recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
-          break;
-      }
+//         default:
+//           recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
+//           break;
+//       }
 
-    //   notifyClients(recievedMessage);
+//     //   notifyClients(recievedMessage);
 
-    }
-    return recievedHeader;
-}
+//     }
+//     return recievedHeader;
+// }
 
-void serial_send_message(messageHeader mHeader, dataHeader dHeader, String data){
-    Serial.print("Expecting: ");
-    Serial.print(mHeader);
-  switch(mHeader){
-    case COMM_ERR:
-      Serial1.print(mHeader);
-      Serial1.print(",");
-      Serial1.println(data);
-      break;
+// void serial_send_message(messageHeader mHeader, dataHeader dHeader, String data){
+//     Serial.print("Expecting: ");
+//     Serial.print(mHeader);
+//   switch(mHeader){
+//     case COMM_ERR:
+//       Serial1.print(mHeader);
+//       Serial1.print(",");
+//       Serial1.println(data);
+//       break;
 
-    case START:
-      Serial1.print(mHeader);
-      Serial1.print(",");
-      break;
+//     case START:
+//       Serial1.print(mHeader);
+//       Serial1.print(",");
+//       break;
 
-    case STOP:
-      Serial1.print(mHeader);
-      Serial1.print(",");
-      break;
+//     case STOP:
+//       Serial1.print(mHeader);
+//       Serial1.print(",");
+//       break;
 
-    case READYTOSTART:
-      Serial1.print(mHeader);
-      Serial1.print(",");
-      break;
+//     case READYTOSTART:
+//       Serial1.print(mHeader);
+//       Serial1.print(",");
+//       break;
 
-    case DATA:
-      Serial1.print(mHeader);
-      Serial1.print(",");
-      Serial1.print(dHeader);
-      Serial1.print(",");
-      Serial1.println(data);
-      break;
+//     case DATA:
+//       Serial1.print(mHeader);
+//       Serial1.print(",");
+//       Serial1.print(dHeader);
+//       Serial1.print(",");
+//       Serial1.println(data);
+//       break;
 
-    default:
-      Serial1.print(mHeader);
-      Serial1.println(",");
-      break;
-  }
-}
+//     default:
+//       Serial1.print(mHeader);
+//       Serial1.println(",");
+//       break;
+//   }
+// }
 
-void process_data(){
-  String headerStr;
-  String recievedMessage;
-  dataHeader recievedHeader;
+// void process_data(){
+//   String headerStr;
+//   String recievedMessage;
+//   dataHeader recievedHeader;
 
-  headerStr = Serial1.readStringUntil(',');
-  recievedHeader = (dataHeader)(headerStr.toInt());
+//   headerStr = Serial1.readStringUntil(',');
+//   recievedHeader = (dataHeader)(headerStr.toInt());
   
-  switch(recievedHeader){
-    case SPEED:
-      recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
-      break;
+//   switch(recievedHeader){
+//     case SPEED:
+//       recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
+//       break;
 
-    case DISTANCE:
-      recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
-      break;
+//     case DISTANCE:
+//       recievedMessage = Serial1.readStringUntil('\n'); //clear the buffer
+//       break;
 
-    default:
-      break;
-  }
-}
+//     default:
+//       break;
+//   }
+// }
 
 
 
