@@ -32,6 +32,7 @@ void onEvent(AsyncWebSocket *server, AsyncWebSocketClient *client, AwsEventType 
 void initWebSocket();
 void notFound(AsyncWebServerRequest *request);
 bool handlepostData(AsyncWebServerRequest *request, uint8_t *datas, int& starting);
+bool handlegetData(AsyncWebServerRequest *request, uint8_t *datas);
 
 enum messageHeader{
     COMM_ERR = 5,
@@ -55,7 +56,7 @@ dataHeader dHeader;
 char data[numChars] = {0};
 
 messageHeader serial_get_message();
-void parseData();
+// void parseData();
 void serial_send_message(messageHeader mHeader, dataHeader dHeader, String data);
 void process_data();
 void listDir(fs::FS &fs, const char *dirname, uint8_t levels);
@@ -100,9 +101,12 @@ void setup()
          request->send(200, "text/plain", "true");
       } 
       if (request->method() == HTTP_GET) {
-
+        if (!handlegetData(request, data)) {
+            Serial.print("Something went wrong!!!");
+            request->send(400, "text/plain", "false");
+        }
       }
-      });
+    });
     server.onNotFound(notFound);
 
     initWebSocket();
@@ -116,7 +120,7 @@ void setup()
     serial_send_message(READYTOSTART, DATA_ERR, " ");
     // Serial1.println("3,-1");
     Serial.print("Sent Ready to start to Portenta!");
-    
+
     char c;
     //Wait for READY from H7
     messageHeader mH;
@@ -135,7 +139,11 @@ void setup()
 }
 
 void loop() {
-    
+    if(Serial1.available() > 0){
+        messageHeader mH = serial_get_message();
+    } else {
+        //Do Nothing
+    }
 }
 
 // This is for testing what our filesystem looks like inside the esp32
@@ -177,9 +185,6 @@ void listDir(fs::FS &fs, const char *dirname, uint8_t levels) {
         file = root.openNextFile();
     }
 }
-
-
-
 
 void initWebSocket() {
   ws.onEvent(onEvent);
@@ -243,7 +248,7 @@ bool handlepostData(AsyncWebServerRequest *request, uint8_t *datas, int& startin
     }
     if (jsonDoc.containsKey("distance")){
         String _distance = jsonDoc["distance"].as<String>();
-        serial_send_message(START, DATA_ERR, " ");
+        // serial_send_message(START, DATA_ERR, " ");
         // Serial1.println(_distance);
     }
     if (jsonDoc.containsKey("direction")){
@@ -254,18 +259,50 @@ bool handlepostData(AsyncWebServerRequest *request, uint8_t *datas, int& startin
         String _directive = jsonDoc["directive"].as<String>();
         Serial.println(_directive);
         serial_send_message(STOP, DATA_ERR, " ");
-        // Serial1.println(_directive);
-        // if(_directive == "STOP"){
-        //     serial_send_message(STOP, DATA_ERR, " ");
-        // } else if (_directive == "START") {
-        //     serial_send_message(START, DATA_ERR, " ");
-        // }
+        Serial1.println(_directive);
+        if(_directive == "STOP"){
+            serial_send_message(STOP, DATA_ERR, " ");
+        } else if (_directive == "START") {
+            serial_send_message(START, DATA_ERR, " ");
+        }
+    }
+
+    if(jsonDoc.containsKey("addSpeedProfile")){
+        String _newFile = jsonDoc["addSpeedProfile"].as<String>();
+        fs:File newFile = SPIFFS.open("/speedProfiles.json", "w");
+        newFile.print(_newFile);
+        newFile.close();
+
+        //Test file
+        fs:File testFile = SPIFFS.open("/speedProfiles.json", "w");
+        Serial.print(testFile.readString());
+        testFile.close();
     }
 
     Serial.println("\n");
 
     return true;
 }
+
+bool handlegetData(AsyncWebServerRequest *request, uint8_t *datas){
+    Serial.printf("[REQUEST]\t%s\r\n", (const char *)datas);
+
+    // JsonDocument jsonDoc;
+    // DeserializationError error = deserializeJson(jsonDoc, (const char *)datas);
+    // if (error)
+    // {
+    //     Serial.print("deserializeJson() failed: ");
+    //     Serial.println(error.c_str());
+    //     return false;
+    // }
+    Serial.println(request->url());
+    if (request->url() == "/speedProfiles"){
+        File file = SPIFFS.open("/speedProfiles.json", "r");
+        request->send(file, "/speedProfiles.json", "text/json", false, nullptr);
+        file.close();
+    }
+}
+
 
 void notFound(AsyncWebServerRequest *request)
 {
