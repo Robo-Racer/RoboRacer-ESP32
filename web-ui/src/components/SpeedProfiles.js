@@ -12,7 +12,9 @@ import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 function SpeedProfiles() {
-    const speedProfiles = populateSpeedProfiles();
+    // const speedProfiles = populateSpeedProfiles();
+    const [speedProfiles, setSpeedProfiles] = useState(getSpeedProfiles()); // json formatted profiles from file
+    const [formattedProfiles, setFormattedProfiles] = useState(formatSpeedProfiles()); // mapped profiles for select dropdown
     const [time, setTime] = useState(null);
     const [distance, setDistance] = useState('');
     const [selectedProfile, setSelectedProfile] = useState("");
@@ -27,8 +29,8 @@ function SpeedProfiles() {
     }
 
     // grab the saved profiles from the json to populate dropdown
-    function populateSpeedProfiles() {
-        return Object.keys(speedProfilesData).map((profileName) => ({
+    function formatSpeedProfiles() {
+        return Object.keys(speedProfiles).map((profileName) => ({
             value: profileName,
             label: profileName,
         }));
@@ -73,7 +75,6 @@ function SpeedProfiles() {
         let seconds = time.second() + (time.minute() * 60);
         let meters = parseInt(distance);
 
-        console.log("name:", name)
         // append new speed profile and send entire JSON
         const data = {
             ...speedProfilesData,
@@ -89,6 +90,9 @@ function SpeedProfiles() {
             method: 'POST',
             body: JSON.stringify(data)
         })
+
+        setSpeedProfiles(getSpeedProfiles()); // grab updated file
+        setFormattedProfiles(formatSpeedProfiles()); // reformat for dropdown
     }
 
     return (
@@ -106,7 +110,7 @@ function SpeedProfiles() {
                     value={selectedProfile}
                     onChange={handleSelect}>
                     <MenuItem value={"custom"}>Custom</MenuItem>
-                    {speedProfiles.map((profile) => (
+                    {formattedProfiles.map((profile) => (
                         <MenuItem key={profile.value} value={profile.value}>
                             {profile.label}
                         </MenuItem>
