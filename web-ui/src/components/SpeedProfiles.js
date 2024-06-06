@@ -8,9 +8,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import speedProfilesData from '../data/speed_profiles.json';
-import { LocalizationProvider } from '@mui/x-date-pickers';
+import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 
 function SpeedProfiles() {
     const speedProfiles = populateSpeedProfiles();
@@ -74,14 +73,17 @@ function SpeedProfiles() {
         let seconds = time.second() + (time.minute() * 60);
         let meters = parseInt(distance);
 
+        console.log("name:", name)
         // append new speed profile and send entire JSON
         const data = {
-            ...speedProfiles,
-            name: {
+            ...speedProfilesData,
+            [name]: {
                 time: seconds,
                 distance: meters
             }
         }
+
+        console.log("new speed profiles", data)
 
         fetch('/addSpeedProfile', {
             method: 'POST',
@@ -112,7 +114,7 @@ function SpeedProfiles() {
                 </Select>
 
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <TimePicker
+                    <DesktopTimePicker
                         label="Time"
                         id="time-input"
                         sx={{ m: 1 }}
