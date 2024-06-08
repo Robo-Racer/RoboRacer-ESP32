@@ -6,47 +6,60 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
+import { useMemo } from 'react';
 import Button from '@mui/material/Button';
 import speedProfilesData from '../data/speed_profiles.json';
 import { DesktopTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
+const dayjs = require('dayjs');
+
+// grab the saved profiles from the json to populate dropdown
+function useSpeedProfiles() {
+    return useMemo(() => {
+        return Object.keys(speedProfilesData).map((profileName) => ({
+            value: profileName,
+            label: profileName,
+        }));
+    }, []);
+}
+
 function SpeedProfiles() {
-    // const speedProfiles = populateSpeedProfiles();
-    const [speedProfiles, setSpeedProfiles] = useState(getSpeedProfiles()); // json formatted profiles from file
-    const [formattedProfiles, setFormattedProfiles] = useState(formatSpeedProfiles()); // mapped profiles for select dropdown
+    const speedProfiles = useSpeedProfiles();
+    // const [speedProfiles, setSpeedProfiles] = useState(getSpeedProfiles()); // json formatted profiles from file
+    // const [formattedProfiles, setFormattedProfiles] = useState(formatSpeedProfiles()); // mapped profiles for select dropdown
     const [time, setTime] = useState(null);
     const [distance, setDistance] = useState('');
     const [selectedProfile, setSelectedProfile] = useState("");
     const [name, setName] = useState("");
 
-    async function getSpeedProfiles() {
-        let response = await fetch('/speedProfiles', {
-            method: 'GET',
-        })
+    // async function getSpeedProfiles() {
+    //     let response = await fetch('/speedProfiles')
 
-        console.log("response:", response);
-    }
+    //     console.log("response:", response);
+    // }
 
     // grab the saved profiles from the json to populate dropdown
-    function formatSpeedProfiles() {
-        return Object.keys(speedProfiles).map((profileName) => ({
-            value: profileName,
-            label: profileName,
-        }));
-    }
+    // function formatSpeedProfiles() {
+    //     return Object.keys(speedProfiles).map((profileName) => ({
+    //         value: profileName,
+    //         label: profileName,
+    //     }));
+    // }
 
     function handleSelect(event) {
         const select = event.target.value;
         setSelectedProfile(select);
 
         if (select !== 'custom') {
-            setTime(speedProfiles[select].time);
-            setDistance(speedProfiles[select].distance);
+            const minutes = speedProfiles[select].time / 60;
+            const seconds = speedProfiles[select].time % 60;
+            setTime(dayjs().minute(0).second(0));
+            setDistance(0);
         }
         else {
-            setTime('');
-            setDistance('');
+            setTime(dayjs().minute(0).second(0));
+            setDistance(0);
         }
     }
 
@@ -72,27 +85,27 @@ function SpeedProfiles() {
     // send updated speed profile to robot
     function handleSave() {
         // format time to be in seconds, distance to be an integer
-        let seconds = time.second() + (time.minute() * 60);
-        let meters = parseInt(distance);
+        // let seconds = time.second() + (time.minute() * 60);
+        // let meters = parseInt(distance);
 
-        // append new speed profile and send entire JSON
-        const data = {
-            ...speedProfilesData,
-            [name]: {
-                time: seconds,
-                distance: meters
-            }
-        }
+        // // append new speed profile and send entire JSON
+        // const data = {
+        //     ...speedProfilesData,
+        //     [name]: {
+        //         time: seconds,
+        //         distance: meters
+        //     }
+        // }
 
-        console.log("new speed profiles", data)
+        // console.log("new speed profiles", data)
 
-        fetch('/addSpeedProfile', {
-            method: 'POST',
-            body: JSON.stringify(data)
-        })
+        // fetch('/addSpeedProfile', {
+        //     method: 'POST',
+        //     body: JSON.stringify(data)
+        // })
 
-        setSpeedProfiles(getSpeedProfiles()); // grab updated file
-        setFormattedProfiles(formatSpeedProfiles()); // reformat for dropdown
+        // setSpeedProfiles(getSpeedProfiles()); // grab updated file
+        // setFormattedProfiles(formatSpeedProfiles()); // reformat for dropdown
     }
 
     return (
@@ -110,7 +123,7 @@ function SpeedProfiles() {
                     value={selectedProfile}
                     onChange={handleSelect}>
                     <MenuItem value={"custom"}>Custom</MenuItem>
-                    {formattedProfiles.map((profile) => (
+                    {speedProfiles.map((profile) => (
                         <MenuItem key={profile.value} value={profile.value}>
                             {profile.label}
                         </MenuItem>
